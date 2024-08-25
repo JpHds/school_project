@@ -2,7 +2,7 @@
 include("config/config.php");
 
 if (isset($_SESSION['userLogged']) && $_SESSION['userLogged'] == true) {
-    header("Location: http://localhost/school_project/index.php");
+    header("Location:http://localhost/school_project/index.php");
 }
 
 ?>
@@ -16,7 +16,7 @@ if (isset($_SESSION['userLogged']) && $_SESSION['userLogged'] == true) {
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <title>Cadastre-se</title>
+    <title>Entrar</title>
     <style>
         .login-container {
             max-width: 400px;

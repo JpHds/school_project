@@ -2,7 +2,7 @@
 include("config/config.php");
 
 if (isset($_SESSION['userLogged']) && $_SESSION['userLogged'] == true) {
-    header("Location: http://localhost/school_project/index.php");
+    header("Location:http://localhost/school_project/index.php");
 }
 
 ?>
@@ -67,11 +67,6 @@ if (isset($_SESSION['userLogged']) && $_SESSION['userLogged'] == true) {
 <body>
     <?php
 
-    if (isset($_SESSION['userLogged']) && $_SESSION['userLogged'] == true) {
-        header("Location: http://localhost/school_project/index.php");
-        exit;
-    }
-
     if (isset($_GET['errorRegister'])) {
         echo '<div class="container mt-4">
                 <div class="alert alert-danger" role="alert">
@@ -94,6 +89,13 @@ if (isset($_SESSION['userLogged']) && $_SESSION['userLogged'] == true) {
                 </div>
                 <div id="emailWarning" class="alert alert-danger mt-2 show d-none" role="alert">
                     Esse e-mail já está em uso.
+                </div>
+                <div class="form-group">
+                    <label for="userCpf">CPF:</label>
+                    <input type="text" id="userCpf" name="userCpf" maxlength="14" class="form-control" required>
+                </div>
+                <div id="cpfWarning" class="alert alert-danger mt-2 show d-none" role="alert">
+                    CPF Inválido!
                 </div>
                 <div class="form-group">
                     <label for="userBirth">Data de Nascimento:</label>
@@ -129,18 +131,16 @@ if (isset($_SESSION['userLogged']) && $_SESSION['userLogged'] == true) {
 <script>
     function verifyEmail(email) {
         $.ajax({
-            url: "api/security/verify-email.php",
+            url: "api/security/verify-email.ajax.php",
             method: "POST",
             data: {
                 userEmail: email
             },
             success: function(response) {
                 if (response.exists) {
-                    $('#emailWarning').removeClass('show');
-                    $('#emailWarning').removeClass('d-none');
+                    $('#emailWarning').addClass('show').removeClass('d-none');
                 } else {
-                    $('#emailWarning').addClass('show');
-                    $('#emailWarning').addClass('d-none');
+                    $('#emailWarning').removeClass('show').addClass('d-none');
                 }
             },
             error: function(xhr, status, error) {
@@ -148,12 +148,54 @@ if (isset($_SESSION['userLogged']) && $_SESSION['userLogged'] == true) {
             }
         });
     }
+
+    document.getElementById('userCpf').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+
+        if (value.length <= 9) {
+            value = value.replace(/(\d{3})(\d{0,3})/, '$1.$2');
+        } else if (value.length <= 11) {
+            value = value.replace(/(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3');
+            value = value.replace(/(\d{3}\.\d{3}\.\d{3})(\d{0,2})/, '$1-$2');
+        }
+
+        e.target.value = value;
+
+        const cpf = value.replace(/\D/g, '');
+        const isValid = isValidCPF(cpf);
+
+        if (isValid) {
+            $('#cpfWarning').removeClass('show').addClass('d-none');
+        } else {
+            $('#cpfWarning').addClass('show').removeClass('d-none');
+        }
+    });
+
+    function isValidCPF(cpf) {
+        if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
+            return false;
+        }
+
+        let sum = 0;
+        for (let i = 0; i < 9; i++) {
+            sum += cpf[i] * (10 - i);
+        }
+        let remainder = sum % 11;
+        let firstDigit = (remainder < 2) ? 0 : 11 - remainder;
+
+        if (cpf[9] != firstDigit) {
+            return false;
+        }
+
+        sum = 0;
+        for (let i = 0; i < 10; i++) {
+            sum += cpf[i] * (11 - i);
+        }
+        remainder = sum % 11;
+        let secondDigit = (remainder < 2) ? 0 : 11 - remainder;
+
+        return cpf[10] == secondDigit;
+    }
 </script>
 
 </html>
-
-<?php
-
-include("api/security/register-user.php");
-
-?>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 include("../../config/dbconnect.php");
 
@@ -12,11 +12,13 @@ $queryVerifyEmail = "SELECT userEmail
 
 $result = $conn->query($queryVerifyEmail);
 
-if($result->num_rows > 0) {
-   $emailExists = true;
+if ($result->num_rows > 0) {
+    $emailExists = true;
 } else {
     $emailExists = false;
 }
 
 
 echo json_encode(['exists' => $emailExists]);
+
+$conn->close();
