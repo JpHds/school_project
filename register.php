@@ -1,3 +1,7 @@
+<?php
+include("config/config.php");
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -9,16 +13,71 @@
 
     <title>Cadastre-se</title>
     <style>
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control {
+            border-radius: 4px;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+
         .full-height {
-            height: 100vh;
+            min-height: 100vh;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert {
+            transition: opacity 0.5s ease-in-out;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        .alert.show {
+            display: block;
+            opacity: 1;
         }
     </style>
 </head>
 
 <body>
-    <div class="container-fluid full-height d-flex justify-content-center align-items-center">
-        <div class="p-5 border bg-light w-50">
-            <h1 class="text-center">Registre-se</h1>
+    <?php
+
+    if (isset($_SESSION['userLogged']) && $_SESSION['userLogged'] == true) {
+        header("Location: http://localhost/school_project/index.php");
+        exit;
+    }
+
+    if (isset($_GET['errorRegister'])) {
+        echo '<div class="container mt-4">
+                <div class="alert alert-danger" role="alert">
+                    Não foi possível cadastrar. Por favor verifique o e-mail informado.
+                </div>
+              </div>';
+    }
+    ?>
+    <div class="container d-flex justify-content-center align-items-center full-height">
+        <div class="login-container border bg-light shadow-sm">
+            <h1 class="text-center mb-4">Registre-se</h1>
             <form action="/school_project/api/security/register-user.php" method="POST">
                 <div class="form-group">
                     <label for="userName">Nome:</label>
@@ -28,7 +87,7 @@
                     <label for="userEmail">E-mail:</label>
                     <input type="email" name="userEmail" id="userEmail" class="form-control" required onblur="verifyEmail(this.value)">
                 </div>
-                <div id="emailWarning" class="alert alert-danger mt-2 d-none" role="alert">
+                <div id="emailWarning" class="alert alert-danger mt-2 show d-none" role="alert">
                     Esse e-mail já está em uso.
                 </div>
                 <div class="form-group">
@@ -36,18 +95,18 @@
                     <input type="date" name="userBirth" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="userPassword">Senha:</label>
-                    <input type="password" name="userPassword" class="form-control" required>
+                    <label for="userPass">Senha:</label>
+                    <input type="password" name="userPass" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="userCategory">Categoria:</label>
                     <select name="userCategory" class="form-control" required>
                         <option value="">Selecione uma categoria</option>
-                        <option value="teacher">Professor</option>
-                        <option value="student">Aluno</option>
+                        <option value="TEACHER">Professor</option>
+                        <option value="STUDENT">Aluno</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Registrar</button>
+                <button type="submit" class="btn btn-primary btn-register">Registrar-se</button>
             </form>
         </div>
     </div>
@@ -69,8 +128,10 @@
             },
             success: function(response) {
                 if (response.exists) {
+                    $('#emailWarning').removeClass('show');
                     $('#emailWarning').removeClass('d-none');
                 } else {
+                    $('#emailWarning').addClass('show');
                     $('#emailWarning').addClass('d-none');
                 }
             },
