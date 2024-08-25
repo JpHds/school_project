@@ -1,5 +1,10 @@
-<?php 
-    include("config/config.php");
+<?php
+include("config/config.php");
+
+if (isset($_SESSION['userLogged']) && $_SESSION['userLogged'] == true) {
+    header("Location: http://localhost/school_project/index.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -18,18 +23,21 @@
             width: 100%;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .form-control {
             border-radius: 4px;
         }
+
         .btn-login {
             width: 100%;
             padding: 10px;
             font-size: 16px;
         }
+
         .full-height {
-            min-height: 100vh; /* Altura mínima da tela */
+            min-height: 100vh;
         }
     </style>
 </head>
@@ -38,10 +46,6 @@
 
     <?php
 
-    if (isset($_SESSION['userLogged']) && $_SESSION['userLogged'] == true) {
-        header("Location: http://localhost/school_project/index.php");
-    }
-    
     if (isset($_GET['sucessRegister'])) {
         echo '<div class="container mt-4">
                     <div class="alert alert-success" role="alert">
@@ -51,7 +55,7 @@
     }
     ?>
 
-<div class="container-fluid d-flex justify-content-center align-items-center full-height">
+    <div class="container-fluid d-flex justify-content-center align-items-center full-height">
         <div class="login-container border bg-light">
             <h1 class="text-center mb-4">Entrar</h1>
             <form action="/school_project/api/security/login-user.php" method="POST">
@@ -65,6 +69,9 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-login">Entrar</button>
             </form>
+            <div class="text-center mt-3">
+                <p class="mb-0">Não possui uma conta? <a href="register.php" class="btn btn-link">Cadastrar-se</a></p>
+            </div>
         </div>
     </div>
 

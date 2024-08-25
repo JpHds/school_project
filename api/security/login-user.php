@@ -23,9 +23,8 @@ if ($result->num_rows > 0) {
     while ($dataUser = mysqli_fetch_array($result)) {
         $_SESSION['userLogged'] = true;
         $_SESSION['userName'] = $dataUser['userName'];
-        $_SESSION['userLogged'] = $dataUser['userCategory'];
+        $_SESSION['userCategory'] = $dataUser['userCategory'];
     }
-    
     header("Location: http://localhost/school_project/index.php");
     exit;
 }

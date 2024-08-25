@@ -13,7 +13,6 @@ if (isset($_SESSION['SESSION_START_TIME'])) {
     if ($timeLogged > $timeToDisconnectUser) {
         session_unset();
         session_destroy();
-        header("Location: http://localhost/school_project/login.php");
         exit;
     } else {
         $_SESSION['SESSION_START_TIME'] = time();

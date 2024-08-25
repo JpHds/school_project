@@ -1,5 +1,10 @@
 <?php
 include("config/config.php");
+
+if (isset($_SESSION['userLogged']) && $_SESSION['userLogged'] == true) {
+    header("Location: http://localhost/school_project/index.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -108,6 +113,9 @@ include("config/config.php");
                 </div>
                 <button type="submit" class="btn btn-primary btn-register">Registrar-se</button>
             </form>
+            <div class="text-center mt-3">
+                <p class="mb-0">Já possui uma conta? <a href="login.php" class="btn btn-link">Entrar</a></p>
+            </div>
         </div>
     </div>
 
