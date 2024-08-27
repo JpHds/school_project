@@ -7,7 +7,8 @@
  * @param string $hashAlgoritm O algoritmo de hash a ser usado (bcrypt ou Argon2).
  * @return string O hash da senha.
  */
-function createPasswordHash($pass, $hashAlgoritm = PASSWORD_BCRYPT) {
+function createPasswordHash($pass, $hashAlgoritm = PASSWORD_BCRYPT)
+{
     return password_hash($pass, $hashAlgoritm);
 }
 
@@ -18,7 +19,7 @@ function createPasswordHash($pass, $hashAlgoritm = PASSWORD_BCRYPT) {
  * @param string $hash O hash armazenado no banco de dados.
  * @return bool Verdadeiro se a senha corresponder ao hash, falso caso contrário.
  */
-function verifyPassword($pass, $hash) {
+function verifyPassword($pass, $hash)
+{
     return password_verify($pass, $hash);
 }
-?>

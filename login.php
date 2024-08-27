@@ -5,6 +5,10 @@ if (isset($_SESSION['userLogged']) && $_SESSION['userLogged'] == true) {
     header("Location:http://localhost/school_project/index.php");
 }
 
+$action = isset($_GET['action']) ? $_GET['action'] : '';
+
+include("pages/login/includes/login-user.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +62,7 @@ if (isset($_SESSION['userLogged']) && $_SESSION['userLogged'] == true) {
     <div class="container-fluid d-flex justify-content-center align-items-center full-height">
         <div class="login-container border bg-light">
             <h1 class="text-center mb-4">Entrar</h1>
-            <form action="/school_project/api/security/login-user.php" method="POST">
+            <form action="?action=login-user" method="POST">
                 <div class="form-group">
                     <label for="userEmail">E-mail:</label>
                     <input type="email" name="userEmail" id="userEmail" class="form-control" required>

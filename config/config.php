@@ -16,6 +16,4 @@ if (isset($_SESSION['SESSION_START_TIME'])) {
     } else {
         $_SESSION['SESSION_START_TIME'] = time();
     }
-} else {
-    $_SESSION['SESSION_START_TIME'] = time();
 }
