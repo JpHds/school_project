@@ -1,7 +1,7 @@
 <?php
 
 include("../../config/dbconnect.php");
-include("../../utils/password_utils.php");
+include("../../utils/password-utils.php");
 
 
 $userName = mysqli_real_escape_string($conn, $_POST['userName']);

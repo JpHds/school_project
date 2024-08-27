@@ -4,7 +4,6 @@ session_start();
 
 date_default_timezone_set('America/Sao_Paulo');
 
-
 $timeToDisconnectUser = 10;
 
 if (isset($_SESSION['SESSION_START_TIME'])) {
